@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Blog</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  {{!-- Header --}}
+  <header class="display-flex justify-space-between align-center p-2 bg-secondary bg-gradient">
+
+    <h1>
+      Tech Blog
+    </h1>
+
+  <ul class="nav nav-pills justify-content-end">
+    {{#if logged_in}}
+    <li class="nav-item p-1" style="width: 150px">
+      <a class="nav-link active btn" id="logout" aria-current="page" href="#" >Logout</a>
+    </li>
+    
+    <li class="nav-item p-1" style="width: 150px">
+      <a class="nav-link active btn" href="#">future btn</a>
+    </li>
+
+    <li class="nav-item p-1" style="width: 150px">
+      <a class="nav-link active btn" href="#">future btn</a>
+    </li>
+    {{/if}}
+
+  </ul>
+
+</header>
+
+{{!-- Body --}}
+  <main class="container container-fluid mt-5">
+     {{{ body }}}
+  </main>
+
+{{!-- Footer --}}
+  <footer>
+      
+  </footer>
+
+    <!-- Only include the logout script if the user is logged in -->
+    {{#if logged_in}}
+    <script src="/js/logout.js"></script>
+    {{/if}}
+
+</body>
+
+</html>

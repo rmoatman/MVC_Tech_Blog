@@ -1,4 +1,3 @@
-Miscellaneous/
-.env
-package-lock.json
 node_modules
+.env
+Miscellaneous/
