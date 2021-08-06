@@ -1,7 +1,53 @@
 const router = require('express').Router();
 const { User } = require('../../models');
 
-// CREATE new user
+router.post('/login', async (req, res) => {
+  try {
+    console.log("Does the user exist?")
+    // Find the user who matches the posted e-mail address
+    const userData = await User.findOne({ 
+      where: {
+        email: req.body.email
+      }
+    });
+     
+    if (!userData) {
+      console.log("The user does not exist")
+      res
+        .status(400)
+        .json({ message: 'Incorrect email or password, please try again' });
+      return;
+    }
+
+    // Verify the posted password with the password store in the database
+    const validPassword = await userData.checkPassword(req.body.password);
+    console.log("Verifying password")
+    if (!validPassword) {
+      console.log("Password is not valid")
+      res
+        .status(400)
+        .json({ message: 'Incorrect email or password, please try again' });
+      return;
+    }
+
+    //Create session variables based on the logged in user
+    req.session.save(() => {
+      req.session.user_id = userData.id;
+      req.session.logged_in = true;
+      console.log("Password is verified, creating a session");
+      res
+        .status(200)
+        .json({ user: userData, message: 'You are now logged in!' });
+        return;
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// Create new user
 router.post('/', async (req, res) => {
   try {
     const userData = await User.create({
@@ -20,57 +66,9 @@ router.post('/', async (req, res) => {
     console.log(err);
     res.status(500).json(err);
   }
-});
+}); // end of Create new user
 
-router.post('/login', async (req, res) => {
-  try {
-    console.log("Are we getting here?")
-    // Find the user who matches the posted e-mail address
-    const userData = await User.findOne({ 
-      where: {
-        email: req.body.email
-      }
-    });
-    console.log("Are we getting here?1")
-    
-    if (!userData) {
-      console.log("Are we getting here?5")
-      res
-        .status(400)
-        .json({ message: 'Incorrect email or password, please try again' });
-      return;
-    }
-
-    // Verify the posted password with the password store in the database
-    const validPassword = await userData.checkPassword(req.body.password);
-    console.log("Are we getting here?2")
-    if (!validPassword) {
-      res
-        .status(400)
-        .json({ message: 'Incorrect email or password, please try again' });
-      return;
-    }
-
-    console.log("Are we getting here?3");
-    //Create session variables based on the logged in user
-    req.session.save(() => {
-      req.session.user_id = userData.id;
-      req.session.logged_in = true;
-      console.log("Are we getting here?4");
-      res
-        .status(200)
-        .json({ user: userData, message: 'You are now logged in!' });
-        console.log("We are here!");
-        return;
-    });
-
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-  console.log("Where now?");
-});
-
+// Logout
 router.post('/logout', (req, res) => {
   if (req.session.logged_in) {
     // Remove the session variables
@@ -80,6 +78,6 @@ router.post('/logout', (req, res) => {
   } else {
     res.status(404).end();
   }
-});
+}); // end of Logout
 
 module.exports = router;

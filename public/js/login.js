@@ -1,6 +1,6 @@
 // Action taken when Submit button is selected
 const loginFormHandler = async (event) => {
-  // Stop the browser from submitting the form so we can do so with JavaScript
+  // Stop the browser from submitting the form 
   event.preventDefault();
 
   // Gather the data from the form elements on the page
@@ -9,17 +9,17 @@ const loginFormHandler = async (event) => {
 
   if (email && password) {
     console.log("email and password");
-    // Send the e-mail and password to the server
+    // Send the e-mail and password to the server (user-Routes)
     const response = await fetch('/api/users/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
       headers: { 'Content-Type': 'application/json' },
     });
 
-    // If user exists, sign them in and redirect to homepage
+    // If user exists, sign them in and redirect to homepage (home-Routes)
     if (response.ok) {
 ////// why do I need a prompt for the replace to happen on the first try?
-      prompt("Please hit ok to continue");
+      //prompt("Please hit ok to continue");
       document.location.replace('/');
 
     } else {
@@ -30,7 +30,7 @@ const loginFormHandler = async (event) => {
 
 // Action taken when Signup button is selected
 const signupFormHandler = async (event) => {
-  // Stop the browser from submitting the form so we can do so with JavaScript
+  // Stop the browser from submitting the form
   event.preventDefault();
 
   // Send the e-mail and password to the server
