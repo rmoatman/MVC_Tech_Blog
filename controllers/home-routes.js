@@ -1,4 +1,8 @@
+// I think I have to change the home-routes to get the blog data
+
+
 const router = require('express').Router();
+/* const { User } = require('../models'); */
 const { User } = require('../models');
 const withAuth = require('../utils/auth');
 

@@ -11,24 +11,22 @@
 
 <body>
   {{!-- Header --}}
-  <header class="display-flex justify-space-between align-center p-2 bg-secondary bg-gradient">
+  <header class="display-flex justify-space-between align-center p-2 text-light bg-primary bg-gradient" style="--bs-bg-opacity: .75">
 
-    <h1>
-      Tech Blog
-    </h1>
+    <h1 class=" p-2" style="font-size: 48pt"> Tech Blog </h1>
 
   <ul class="nav nav-pills justify-content-end">
     {{#if logged_in}}
     <li class="nav-item p-1" style="width: 150px">
-      <a class="nav-link active btn" id="logout" aria-current="page" href="#" >Logout</a>
+      <a class="nav-link active btn" id="home" aria-current="page" href="#" >Home</a>
     </li>
     
     <li class="nav-item p-1" style="width: 150px">
-      <a class="nav-link active btn" href="#">future btn</a>
+      <a class="nav-link active btn" id="dashboard" aria-current="page" href="#" >Dashboard</a>
     </li>
 
     <li class="nav-item p-1" style="width: 150px">
-      <a class="nav-link active btn" href="#">future btn</a>
+      <a class="nav-link active btn" id="logout" aria-current="page" href="#" >Logout</a>
     </li>
     {{/if}}
 
