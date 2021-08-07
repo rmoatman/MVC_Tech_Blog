@@ -37,6 +37,7 @@ router.get('/', async (req, res) => {
 router.get('/postpage/:id', async (req, res) => {
   console.log("req.params.id");
   console.log(req.params.id);
+
   try {
     const postData = await Blog.findOne({
       where: { id: req.params.id },
@@ -57,7 +58,6 @@ router.get('/postpage/:id', async (req, res) => {
     res.render('postpage', {
       post,
       loggedIn: req.session.loggedIn,
-      name: req.session.name,
     });
 
   } catch (err) {
