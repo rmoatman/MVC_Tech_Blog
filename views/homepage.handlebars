@@ -4,10 +4,10 @@
 {{#each blogs as |blog| }}
 <div class="card" style="width: 80%;">
   <div class="card-body">
-    <h5 class="card-title text-primary">{{blog.title}} by {{user.username}}
+    <h2 class="card-title text-primary">{{blog.title}}</h2>
+    <h6 class="fst-italic">by {{user.username}} on {{blog.date}}</h6>
     <p class="card-text text-dark">{{blog.content}}</p>
-    <p class="card-text fst-italic">{{blog.comment}}</p>
-    <a href="#" class="btn btn-primary">Comment</a>
+    <a href="/postpage/{{blog.id}}" class="btn btn-primary">Read</a>
   </div>
 </div>
 {{/each}}

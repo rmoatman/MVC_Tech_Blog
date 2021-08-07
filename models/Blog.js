@@ -1,9 +1,12 @@
-const { Model, DataTypes } = require('sequelize');
+const { Model, DataTypes, Sequelize } = require('sequelize');
+
 const sequelize = require('../config/connection');
 
 class Blog extends Model {
 
 }
+
+
 
 Blog.init(
 
@@ -16,7 +19,8 @@ Blog.init(
     },
 
     date: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.TEXT,
+        allowNull: false,
     },
 
     title: {
@@ -28,19 +32,10 @@ Blog.init(
         type: DataTypes.TEXT('long'),
         allowNull: false,
     },
-
-    comment: {
-        type: DataTypes.TEXT('medium'),
-        allowNull: true,
-    },
-    
-    commentUser: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
     
     username_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references:{
             model:'user',
             key:'id',

@@ -1,0 +1,14 @@
+[
+  {    
+    "comment_text": "This is a comment",
+    "user_id": "1",
+    "blog_id": "2"
+
+  },
+
+  {
+    "comment_text": "This is another comment",
+    "user_id": "2",
+    "blog_id": "4"
+  }
+]
