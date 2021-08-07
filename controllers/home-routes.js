@@ -1,9 +1,11 @@
 const router = require('express').Router();
 const { User, Blog, Comment } = require('../models');
+const withAuth = require('../utils/auth');
 
+//check req.sess, if null then redirect
 
 // Case: /.  Redirects to /login if not logged in or to /hompage if session exists. (use withAuth in /utils/helpers)
-router.get('/', async (req, res) => {
+router.get('/', withAuth, async (req, res) => {
 
    try {
 
