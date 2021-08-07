@@ -61,10 +61,10 @@ router.get('/postpage/:id', withAuth, async (req, res) => {
 
     res.render('postpage', {
       post,
-      loggedIn: req.session.loggedIn,
+      logged_in: req.session.logged_in
 
     });
-    console.log(req.session.loggedIn);
+    console.log(req.session.logged_in);
 
   } catch (err) {
     res.status(404).json({ message: 'No post found with that ID.' });
