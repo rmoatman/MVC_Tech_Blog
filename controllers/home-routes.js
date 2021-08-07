@@ -28,7 +28,9 @@ router.get('/', withAuth, async (req, res) => {
     res.render('homepage', {
       blogs,
       logged_in: req.session.logged_in,
+
     });
+    console.log(req.session.logged_in);
 
   } catch (err) {
     res.status(503).json(err);
@@ -36,7 +38,7 @@ router.get('/', withAuth, async (req, res) => {
 }); // end Case: /.
 
 // Case:  User selects a single post
-router.get('/postpage/:id', async (req, res) => {
+router.get('/postpage/:id', withAuth, async (req, res) => {
   console.log("req.params.id");
   console.log(req.params.id);
 
@@ -60,7 +62,9 @@ router.get('/postpage/:id', async (req, res) => {
     res.render('postpage', {
       post,
       loggedIn: req.session.loggedIn,
+
     });
+    console.log(req.session.loggedIn);
 
   } catch (err) {
     res.status(404).json({ message: 'No post found with that ID.' });
