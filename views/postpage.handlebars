@@ -4,7 +4,15 @@
     <h2 class="card-title text-primary">{{post.title}}</h2>
     <h6 class="fst-italic">by {{post.user.username}} on {{post.date}}</h6>
     <p class="card-text text-dark">{{post.content}}</p>
+    <hr>
+    <h5 class="text-primary">Comments:</h5>
 
-{{!--     <a href="/blogs/{{this.id}}" class="btn btn-primary">Read</a> --}}
+    {{#each post.comments}}
+    {{this.comment_text}}
+    <hr>
+    {{/each}}
+
+    <a href="/newcomment/{{post.id}}" class="btn btn-primary">Add New Comment</a>
   </div>
 </div>
+

@@ -47,12 +47,8 @@ router.get('/postpage/:id', withAuth, async (req, res) => {
       where: { id: req.params.id },
       include: [
         { model: User, attributes: ['username'] },
-        {
-          model: Comment,
-          attributes: ['comment_text', 'user_id', 'blog_id'],
-          /* include: [{ model: User, attributes: ['username'] }] */
-        },
-      ],
+        { model: Comment, attributes: ['comment_text']}
+       ],
     });
 
     console.log(postData);
@@ -71,6 +67,79 @@ router.get('/postpage/:id', withAuth, async (req, res) => {
   }
 });
 
+// Case:  User adds new comment
+router.get('/newcomment/:id', withAuth, async (req, res) => {
+  console.log("req.params.id");
+  console.log(req.params.id);
+
+  try {
+    const postData = await Blog.findOne({
+      where: { id: req.params.id },
+      include: [
+        { model: User, attributes: ['username'] },
+        { model: Comment, attributes: ['comment_text']}
+       ],
+    });
+
+
+    const post = postData.get({ plain: true });
+
+
+    res.render('newcomment', {
+      post,
+      logged_in: req.session.logged_in
+
+    });
+    console.log(req.session.logged_in);
+
+  } catch (err) {
+    res.status(404).json({ message: 'No post found with that ID.' });
+  }
+});
+
+
+// Case:  User adds new comment
+router.post('/comment', withAuth, async (req, res) => {
+  console.log("We are here");
+  console.log(req.body);
+  
+  if(req.session) {
+
+    Comment.create ({
+      blog_id: req.body.blog_id,
+      comment_text: req.body.commentText,
+      user_id: req.session.user_id,
+    })
+
+    .then(dbcommentData => res.json(dbcommentData))
+    .catch(err => {
+        console.log(err)
+        res.status(400).json.user_id(err);
+    })
+
+  }
+
+});
+
+//     console.log("newComment");
+//     console.log(newComment);
+
+//     const commentData = newComment.get({ plain: true});
+
+//     console.log("commentData");
+//     console.log(commentData);
+
+//     res.status(200).json(commentData);
+
+
+//     console.log("We've hit an error");
+//     //  res.status(500).json(err);
+//   }
+// /*     res.render('homepage', {
+//       logged_in: req.session.logged_in */
+
+// /*     }); */
+// });
 
 
 

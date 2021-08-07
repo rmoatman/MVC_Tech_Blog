@@ -49,6 +49,7 @@ router.post('/login', async (req, res) => {
 
 // Create new user
 router.post('/', async (req, res) => {
+  
   try {
     const userData = await User.create({
       username: req.body.username,
