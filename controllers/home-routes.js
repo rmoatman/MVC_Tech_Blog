@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { response } = require('express');
 const { User, Blog, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
@@ -39,8 +40,12 @@ router.get('/', withAuth, async (req, res) => {
 
 // Case:  User selects a single post
 router.get('/postpage/:id', withAuth, async (req, res) => {
-  console.log("req.params.id");
-  console.log(req.params.id);
+  // console.log("req.params.id");
+  // console.log(req.params.id);
+  console.log("-----------------------------------------");
+  console.log("home-routes.js:  router.get /postpage/:id");
+  console.log("From home page, select single post");
+  console.log("-----------------------------------------");
 
   try {
     const postData = await Blog.findOne({
@@ -51,26 +56,28 @@ router.get('/postpage/:id', withAuth, async (req, res) => {
        ],
     });
 
-    console.log(postData);
+    // console.log(postData);
     const post = postData.get({ plain: true });
-    console.log(post);
+    // console.log(post);
 
     res.render('postpage', {
       post,
       logged_in: req.session.logged_in
 
     });
-    console.log(req.session.logged_in);
+    // console.log(req.session.logged_in);
 
   } catch (err) {
     res.status(404).json({ message: 'No post found with that ID.' });
   }
 });
 
-// Case:  User adds new comment
+// From postpage.  Loads newcomment page (sent here from home-routes.js )
 router.get('/newcomment/:id', withAuth, async (req, res) => {
-  console.log("req.params.id");
-  console.log(req.params.id);
+  console.log("-------------------------------------------");
+  console.log("home-routes.js:  router.get /newcomment/:id");
+  console.log("From post page, pressed add new comment");
+  console.log("-------------------------------------------");
 
   try {
     const postData = await Blog.findOne({
@@ -81,16 +88,14 @@ router.get('/newcomment/:id', withAuth, async (req, res) => {
        ],
     });
 
-
     const post = postData.get({ plain: true });
-
 
     res.render('newcomment', {
       post,
       logged_in: req.session.logged_in
 
     });
-    console.log(req.session.logged_in);
+    // console.log(req.session.logged_in);
 
   } catch (err) {
     res.status(404).json({ message: 'No post found with that ID.' });
@@ -98,11 +103,9 @@ router.get('/newcomment/:id', withAuth, async (req, res) => {
 });
 
 
-// Case:  User adds new comment
+// Posts new comment on newcomment page (sent here from addcomments.js)
 router.post('/comment', withAuth, async (req, res) => {
-  console.log("We are here");
-  console.log(req.body);
-  
+
   if(req.session) {
 
     Comment.create ({
@@ -111,36 +114,17 @@ router.post('/comment', withAuth, async (req, res) => {
       user_id: req.session.user_id,
     })
 
-    .then(dbcommentData => res.json(dbcommentData))
-    .catch(err => {
+    console.log("------------------------------------");
+    console.log("home-routes.js: router.post /comment");
+    console.log("Comment has been posted");
+    console.log("------------------------------------");
+
+  } else (err => {
         console.log(err)
         res.status(400).json.user_id(err);
     })
-
-  }
-
+  
 });
-
-//     console.log("newComment");
-//     console.log(newComment);
-
-//     const commentData = newComment.get({ plain: true});
-
-//     console.log("commentData");
-//     console.log(commentData);
-
-//     res.status(200).json(commentData);
-
-
-//     console.log("We've hit an error");
-//     //  res.status(500).json(err);
-//   }
-// /*     res.render('homepage', {
-//       logged_in: req.session.logged_in */
-
-// /*     }); */
-// });
-
 
 
 

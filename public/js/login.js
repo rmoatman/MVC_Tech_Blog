@@ -8,7 +8,7 @@ const loginFormHandler = async (event) => {
   const password = document.querySelector('#password-login').value.trim();
 
   if (email && password) {
-    console.log("email and password");
+
     // Send the e-mail and password to the server (user-Routes)
     const response = await fetch('/api/users/login', {
       method: 'POST',
@@ -18,12 +18,11 @@ const loginFormHandler = async (event) => {
 
     // If user exists, sign them in and redirect to homepage (home-Routes)
     if (response.ok) {
-////// why do I need a prompt for the replace to happen on the first try?
-      //prompt("Please hit ok to continue");
-      document.location.replace('/');
-
+      prompt("Please press enter to continue");
+      window.location.replace('/');
+ 
     } else {
-      alert('Failed to log in');
+        alert('Failed to log in');
     }
   }
 };
