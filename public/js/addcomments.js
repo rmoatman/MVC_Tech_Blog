@@ -22,7 +22,7 @@ const commentFormHandler = async (event) => {
             headers: { 'Content-Type': 'application/json' },
         });
 
-        //alert("Your comment has been created");
+        alert("Your comment has been created");
         window.location.replace("/");;
   
     } else {

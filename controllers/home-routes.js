@@ -81,7 +81,6 @@ router.get('/newcomment/:id', withAuth, async (req, res) => {
       logged_in: req.session.logged_in
 
     });
-    // console.log(req.session.logged_in);
 
   } catch (err) {
     res.status(404).json({ message: 'No post found with that ID.' });
@@ -161,7 +160,7 @@ router.get('/newpostview', withAuth, async (req, res) => {
       logged_in: req.session.logged_in
 
     });
-    // console.log(req.session.logged_in);
+
 
   } catch (err) {
     res.status(404).json(err);
@@ -182,11 +181,59 @@ router.post('/newpost', withAuth, (req, res) => {
     })
 
   } else (err => {
-        console.log(err)
         res.status(400).json.user_id(err);
     });
   
 }); // end of POST NEW COMMENT
+
+
+// EDIT POST VIEW
+router.get('/editpost/:id', withAuth, async (req, res) => {
+
+  try {
+    const postData = await Blog.findOne({
+      where: { id: req.params.id },
+      include: [
+        { model: User, attributes: ['username'] },
+        { model: Comment, attributes: ['date', 'comment_text', 'user_id']}
+       ],
+    });
+
+    const post = postData.get({ plain: true });
+
+    res.render('editpost', {
+      post,
+      logged_in: req.session.logged_in
+
+    });
+
+  } catch (err) {
+    res.status(404).json({ message: 'No post found with that ID.' });
+  }
+}); // end of EDIT POST VIEW
+
+
+// EDITED POST
+router.put('/editedpost', withAuth, (req, res) => {
+
+  if(req.session) {
+    console.log("req.body.post_title");
+    console.log(req.body.post_title);
+    console.log(req.body.id);
+
+     Blog.update(
+      {
+      title: req.body.post_title,
+      content: req.body.post_content,
+      },
+      {where: { id: req.body.post_id }},
+    );
+
+  } else (err => {
+        res.status(400).json.user_id(err);
+    });
+  
+}); // end of EDIT POST
 
 
 // DELETE SINGLE POST

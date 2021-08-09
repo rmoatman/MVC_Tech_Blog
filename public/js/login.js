@@ -47,7 +47,9 @@ const signupFormHandler = async (event) => {
 
     // If credentials are saved, sign user in and redirect to homepage
     if (response.ok) {
-      document.location.replace('/');
+      alert("Your account has been created.  Please sign in.");
+      window.location.replace('/');
+
     } else {
       alert('Failed to sign up.  Please try again.');
     }
