@@ -33,5 +33,12 @@
     "title": "Blog Post 5",
     "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste mollitia error repudiandae voluptates non ipsam! Odio, cupiditate? Nemo sint, enim dolorum harum repellat, deserunt nam, quia iure provident molestiae corrupti!",
     "username_id": "4"
+  },
+
+  {
+    "date": "01/08/21",
+    "title": "Blog Post 6",
+    "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste mollitia error repudiandae voluptates non ipsam! Odio, cupiditate? Nemo sint, enim dolorum harum repellat, deserunt nam, quia iure provident molestiae corrupti!",
+    "username_id": "4"
   }
 ]

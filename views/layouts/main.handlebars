@@ -17,17 +17,18 @@
 
   <ul class="nav nav-pills justify-content-end">
     {{#if logged_in}}
-    <li class="nav-item p-1" style="width: 150px">
+    <li class="nav-item p-1" id="home-button" style="width: 150px">
       <a class="nav-link active btn" id="home" aria-current="page" href="#" >Home</a>
     </li>
     
-    <li class="nav-item p-1" style="width: 150px">
+    <li class="nav-item p-1"  id="dashboard-button" style="width: 150px">
       <a class="nav-link active btn" id="dashboard" aria-current="page" href="#" >Dashboard</a>
     </li>
 
     <li class="nav-item p-1" style="width: 150px">
       <a class="nav-link active btn" id="logout" aria-current="page" href="#" >Logout</a>
     </li>
+    <script src="/js/navigation.js"></script>
     {{/if}}
 
   </ul>

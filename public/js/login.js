@@ -18,11 +18,11 @@ const loginFormHandler = async (event) => {
 
     // If user exists, sign them in and redirect to homepage (home-Routes)
     if (response.ok) {
-      prompt("Please press enter to continue");
+      alert("Please be respectful to others on this site.");
       window.location.replace('/');
  
     } else {
-        alert('Failed to log in');
+        alert('Incorrect Username or Password.  Try again.');
     }
   }
 };
@@ -49,7 +49,7 @@ const signupFormHandler = async (event) => {
     if (response.ok) {
       document.location.replace('/');
     } else {
-      alert('Failed to sign up.');
+      alert('Failed to sign up.  Please try again.');
     }
   }
 };

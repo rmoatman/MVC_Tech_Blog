@@ -1,0 +1,15 @@
+{{!-- This is the {{body}} homepage that appears after users successfully log in --}}
+<h1>Dashboard</h1>
+
+{{#each blogs as |blog| }}
+<div class="card" style="width: 80%;">
+  <div class="card-body">
+    <h2 class="card-title text-primary">{{blog.title}}</h2>
+    <h6 class="fst-italic">by {{user.username}} on {{blog.date}}</h6>
+    <p class="card-text text-dark">{{blog.content}}</p>
+    <a href="/postpage/{{blog.id}}" class="btn btn-primary">Read</a>
+  </div>
+</div>
+{{/each}}
+
+
