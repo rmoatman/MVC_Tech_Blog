@@ -7,9 +7,19 @@
     <h2 class="card-title text-primary">{{blog.title}}</h2>
     <h6 class="fst-italic">by {{user.username}} on {{blog.date}}</h6>
     <p class="card-text text-dark">{{blog.content}}</p>
-    <a href="/postpage/{{blog.id}}" class="btn btn-primary">Read</a>
+    <hr>
+    {{#each blog.comments}}
+    {{this.comment_text}}
+    <hr>
+    {{/each}}
+
+    <a href="/postpage/{{blog.id}}" class="btn btn-primary" style="width: 150px">Read</a>
+    <a href="/deletepost/{{blog.id}}" class="btn btn-primary" style="width: 150px">Delete</a>
+    
+    {{!-- <button class="btn btn-primary" id="deleteButton" style="width: 150px">Delete</a> --}}
   </div>
 </div>
 {{/each}}
 
+<script src="/js/delete.js"></script>
 

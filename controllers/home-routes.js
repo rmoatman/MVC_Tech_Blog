@@ -3,9 +3,9 @@ const { response } = require('express');
 const { User, Blog, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
-//check req.sess, if null then redirect
 
-// Case: /.  Redirects to /login if not logged in or to /hompage if session exists. (use withAuth in /utils/helpers)
+
+// HOMEPAGE IF LOGGED IN
 router.get('/', withAuth, async (req, res) => {
 
    try {
@@ -20,25 +20,26 @@ router.get('/', withAuth, async (req, res) => {
 
       include: [
         {model: User, attributes: ['username']},
+        {model: Comment, attributes: ['comment_text']},
       ]
       });
-
     const blogs = blogData.map((blog) => blog.get({ plain: true }));
-    console.log("Blogs data");
-    console.log(blogs);
+    // console.log("Blogs data");
+    // console.log(blogs);
     res.render('homepage', {
       blogs,
       logged_in: req.session.logged_in,
 
     });
-    console.log(req.session.logged_in);
+    //console.log(req.session.logged_in);
 
   } catch (err) {
     res.status(503).json(err);
   }
-}); // end Case: /.
+}); // end HOMEPAGE /.
 
-// Case:  User selects a single post
+
+// SINGLE POST
 router.get('/postpage/:id', withAuth, async (req, res) => {
   // console.log("req.params.id");
   // console.log(req.params.id);
@@ -70,9 +71,9 @@ router.get('/postpage/:id', withAuth, async (req, res) => {
   } catch (err) {
     res.status(404).json({ message: 'No post found with that ID.' });
   }
-});
+}); // end of SINGLE POST
 
-// From postpage.  Loads newcomment page (sent here from home-routes.js )
+// NEW COMMENT VIEW (from home-routes.js)
 router.get('/newcomment/:id', withAuth, async (req, res) => {
   console.log("-------------------------------------------");
   console.log("home-routes.js:  router.get /newcomment/:id");
@@ -100,10 +101,10 @@ router.get('/newcomment/:id', withAuth, async (req, res) => {
   } catch (err) {
     res.status(404).json({ message: 'No post found with that ID.' });
   }
-});
+}); // end NEW COMMENT VIEW
 
 
-// Posts new comment on newcomment page (sent here from addcomments.js)
+// POST NEW COMMENT (sent here from addcomments.js)
 router.post('/comment', withAuth, async (req, res) => {
 
   if(req.session) {
@@ -128,8 +129,8 @@ router.post('/comment', withAuth, async (req, res) => {
 
 // Case: /dashboard.
 router.get('/dashboard', withAuth, async (req, res) => {
-  console.log("req.session.logged)in");
-  console.log(req.session.user_id);
+  //console.log("req.session.logged)in");
+  //console.log(req.session.user_id);
   try {
     
    const blogData = await Blog.findAll({
@@ -144,46 +145,68 @@ router.get('/dashboard', withAuth, async (req, res) => {
 
      include: [
        {model: User, attributes: [ 'id', 'username']},
+       {model: Comment, attributes: ['comment_text']},
      ]
   });
 
    const blogs = blogData.map((blog) => blog.get({ plain: true }));
-   console.log("Blogs data");
-   console.log(blogs);
+
    res.render('dashboard', {
      blogs,
      logged_in: req.session.logged_in,
 
    });
-   console.log(req.session.logged_in);
 
  } catch (err) {
    res.status(503).json(err);
  }
-}); // end Case: /.
+}); // end POST NEW COMMENT
+
+
+// DELETE SINGLE POST
+router.get('/deletepost/:id', withAuth,  async (req, res) => {
+  console.log("-----------------------------------------");
+  console.log("home-routes.js:  router.get /deletepage/:id");
+  console.log("From dashboard, delete button");
+  console.log("-----------------------------------------");
+
+ await Blog.destroy({
+      where: { id: req.params.id },
+    });
+
+    console.log("deleted");
+
+// destroys but does not refresh. GET/DESTROY conflict?
+
+    //res.render('homepage');
+
+    const blogData = await Blog.findAll({
+      attributes: [
+        'id',
+        'date',
+        'title',
+        'content'
+      ],
+
+      include: [
+        {model: User, attributes: ['username']},
+        {model: Comment, attributes: ['comment_text']},
+      ]
+      });
+
+    const blogs = blogData.map((blog) => blog.get({ plain: true }));
+    // console.log("Blogs data");
+    // console.log(blogs);
+    res.render('homepage', {
+      blogs,
+      logged_in: req.session.logged_in,
+    })
+
+}); // end DELETE SINGLE POST
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Case:  User tries /login
+// LOGIN
 router.get('/login', (req, res) => {
   // If a session exists, redirect the request to the homepage
   if (req.session.logged_in) {

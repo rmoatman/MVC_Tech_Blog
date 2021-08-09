@@ -13,7 +13,6 @@ const commentFormHandler = async (event) => {
         console.log("----------------------------------------");
         console.log("Comments exists, pressed submit");
         console.log("Go to router.post/comment in home-routes");
-        console.log("How can I refresh the page?")
         console.log("----------------------------------------");
         const response = fetch('/comment', {
             method: 'POST',
@@ -23,7 +22,6 @@ const commentFormHandler = async (event) => {
             }),
             headers: { 'Content-Type': 'application/json' },
         });
-        // Get here but won't reload
         console.log("Redirecting to homepage");
         window.location.replace("/");
 
