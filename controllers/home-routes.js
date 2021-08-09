@@ -19,7 +19,7 @@ router.get('/', withAuth, async (req, res) => {
 
       include: [
         {model: User, attributes: ['username']},
-        {model: Comment, attributes: ['comment_text', 'user_id']},
+        {model: Comment, attributes: ['date', 'comment_text', 'user_id']},
       ]
       });
     const blogs = blogData.map((blog) => blog.get({ plain: true }));
@@ -44,7 +44,7 @@ router.get('/postpage/:id', withAuth, async (req, res) => {
       where: { id: req.params.id },
       include: [
         { model: User, attributes: ['username'] },
-        { model: Comment, attributes: ['comment_text', 'user_id']}
+        { model: Comment, attributes: ['date', 'comment_text', 'user_id']}
        ],
     });
 
@@ -70,7 +70,7 @@ router.get('/newcomment/:id', withAuth, async (req, res) => {
       where: { id: req.params.id },
       include: [
         { model: User, attributes: ['username'] },
-        { model: Comment, attributes: ['comment_text']}
+        { model: Comment, attributes: ['date', 'comment_text']}
        ],
     });
 
@@ -95,14 +95,14 @@ router.post('/comment', withAuth, async (req, res) => {
   if(req.session) {
 
     Comment.create ({
+      date: req.body.comment_date,
       blog_id: req.body.blog_id,
       comment_text: req.body.commentText,
       user_id: req.session.user_id,
     })
     
   } else (err => {
-        console.log(err)
-        res.status(400).json.user_id(err);
+      res.status(400).json.user_id(err);
     })
   
 }); // end of POST NEW COMMENT
@@ -125,7 +125,7 @@ router.get('/dashboard', withAuth, async (req, res) => {
 
      include: [
        {model: User, attributes: [ 'id', 'username']},
-       {model: Comment, attributes: ['comment_text', 'user_id']},
+       {model: Comment, attributes: ['date', 'comment_text', 'user_id']},
      ]
   });
 
@@ -143,14 +143,14 @@ router.get('/dashboard', withAuth, async (req, res) => {
 }); // end DASHBOARD VIEW
 
 
-// NEW POST
+// NEW POST VIEW
 router.get('/newpostview', withAuth, async (req, res) => {
 
   try {
     const postData = await Blog.findOne({
       include: [
         { model: User, attributes: ['username'] },
-        { model: Comment, attributes: ['comment_text']}
+        { model: Comment, attributes: ['date', 'comment_text']}
        ],
     });
 
@@ -164,9 +164,9 @@ router.get('/newpostview', withAuth, async (req, res) => {
     // console.log(req.session.logged_in);
 
   } catch (err) {
-    res.status(404).json({ message: 'No post found with that ID.' });
+    res.status(404).json(err);
   }
-}); // end NEW COMMENT VIEW
+}); // end NEW POST VIEW
 
 
 // NEW POST

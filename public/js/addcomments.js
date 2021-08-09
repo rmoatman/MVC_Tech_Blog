@@ -6,8 +6,8 @@ const commentFormHandler = async (event) => {
     // Gather the information from the form element on the page
     const commentText = document.querySelector('#new_comment').value.trim();
     const blog_id = window.location.toString().split('/')[
-        window.location.toString().split('/').length - 1
-    ];
+        window.location.toString().split('/').length - 1 ];
+    const comment_date = new Date().toLocaleDateString();
 
     if (commentText) {
 
@@ -15,16 +15,15 @@ const commentFormHandler = async (event) => {
             method: 'POST',
             body: JSON.stringify({
                 commentText,
-                blog_id
+                blog_id,
+                comment_date
+
             }),
             headers: { 'Content-Type': 'application/json' },
         });
 
-        alert("Your comment has been created");
+        //alert("Your comment has been created");
         window.location.replace("/");;
-
-
-
   
     } else {
         console.log("no comment");

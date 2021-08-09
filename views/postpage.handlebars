@@ -8,7 +8,7 @@
     <h5 class="text-primary">Comments:</h5>
 
     {{#each post.comments}}
-    <h6 class="fst-italic">Comment by {{this.user_id}}:</h6>
+    <h6 class="fst-italic">Comment by user #{{this.user_id}} on {{this.date}}:</h6>
     {{this.comment_text}}
     <hr>
     {{/each}}

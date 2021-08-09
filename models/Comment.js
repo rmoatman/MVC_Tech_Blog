@@ -17,6 +17,11 @@ Comment.init(
             autoIncrement: true,
         },
 
+        date: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+        },
+
         comment_text: {
             type: DataTypes.STRING,
             allowNull: false,

@@ -6,7 +6,7 @@ const newPostFormHandler = async (event) => {
     // Gather the information from the form element on the page
     const post_title = document.querySelector('#new_post_title').value.trim();
     const post_content = document.querySelector('#new_post_content').value.trim();
-    const date = new Date().toLocaleDateString()
+    const date = new Date().toLocaleDateString();
 
     if (post_title && post_content) {
 
