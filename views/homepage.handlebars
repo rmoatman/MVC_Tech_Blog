@@ -9,10 +9,10 @@
     <p class="card-text text-dark">{{blog.content}}</p>
     <hr>
     {{#each blog.comments}}
+    <h6 class="fst-italic">Comment by {{this.user_id}}:</h6>
     {{this.comment_text}}
     <hr>
     {{/each}}
-
 
     <a href="/postpage/{{blog.id}}" class="btn btn-primary">Read</a>
   </div>

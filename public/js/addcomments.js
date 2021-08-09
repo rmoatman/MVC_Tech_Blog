@@ -10,10 +10,7 @@ const commentFormHandler = async (event) => {
     ];
 
     if (commentText) {
-        console.log("----------------------------------------");
-        console.log("Comments exists, pressed submit");
-        console.log("Go to router.post/comment in home-routes");
-        console.log("----------------------------------------");
+
         const response = fetch('/comment', {
             method: 'POST',
             body: JSON.stringify({
@@ -22,8 +19,9 @@ const commentFormHandler = async (event) => {
             }),
             headers: { 'Content-Type': 'application/json' },
         });
-        console.log("Redirecting to homepage");
-        window.location.replace("/");
+
+        alert("Your comment has been created");
+        window.location.replace("/");;
 
 
 

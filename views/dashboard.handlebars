@@ -1,5 +1,6 @@
 {{!-- This is the {{body}} homepage that appears after users successfully log in --}}
 <h1>Dashboard</h1>
+<a href="/newpostview" class="btn btn-primary p-2 m-2" style="width: 80%">Click Here to Create New Post</a>
 
 {{#each blogs as |blog| }}
 <div class="card" style="width: 80%;">
@@ -9,15 +10,14 @@
     <p class="card-text text-dark">{{blog.content}}</p>
     <hr>
     {{#each blog.comments}}
+    <h6 class="fst-italic">Comment by {{this.user_id}}:</h6>
     {{this.comment_text}}
     <hr>
     {{/each}}
 
     <a href="/postpage/{{blog.id}}" class="btn btn-primary" style="width: 150px">Read</a>
     <a href="/deletepost/{{blog.id}}" class="btn btn-primary" style="width: 150px">Delete</a>
-    
-    {{!-- <button class="btn btn-primary" id="deleteButton" style="width: 150px">Delete</a> --}}
-  </div>
+    </div>
 </div>
 {{/each}}
 
