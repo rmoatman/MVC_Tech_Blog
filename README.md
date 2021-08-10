@@ -2,7 +2,7 @@
 
 [<img src="https://img.shields.io/badge/license-MIT-brightgreen?link=https://opensource.org/licenses/MIT">](https://opensource.org/licenses/MIT)
 
-<img src="./assets/screenshot_of_tech_blog.PNG" alt="Screenshot of XXXXX'">
+<img src="./assets/screenshot_of_MVC_Tech_Blog.PNG" alt="Screenshot of Tech Blog Login Page">
 <br><br>
 
 ## Description
