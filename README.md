@@ -38,8 +38,7 @@ To run the app, use the command:
 ~~~
 node server.js
 ~~~
-A demonstration video can be found here: XXXXX
-<br><br>
+<br>
 ## License
 
 This work is covered under MIT License.  For more information, click on the license badge above.
