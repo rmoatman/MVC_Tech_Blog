@@ -39,6 +39,7 @@ To run the app, use the command:
 node server.js
 ~~~
 <br>
+
 ## License
 
 This work is covered under MIT License.  For more information, click on the license badge above.
