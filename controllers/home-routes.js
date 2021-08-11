@@ -22,6 +22,7 @@ router.get('/', withAuth, async (req, res) => {
         {model: Comment, attributes: ['date', 'comment_text', 'user_id']},
       ]
       });
+      
     const blogs = blogData.map((blog) => blog.get({ plain: true }));
 
     res.render('homepage', {
