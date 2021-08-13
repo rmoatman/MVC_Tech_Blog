@@ -1,284 +1,257 @@
-const router = require('express').Router();
-const { response } = require('express');
-const { User, Blog, Comment } = require('../models');
-const withAuth = require('../utils/auth');
-
+const router = require("express").Router();
+const { response } = require("express");
+const { User, Blog, Comment } = require("../models");
+const withAuth = require("../utils/auth");
 
 // HOMEPAGE IF LOGGED IN
-router.get('/', withAuth, async (req, res) => {
-
-   try {
-
+router.get("/", withAuth, async (req, res) => {
+  try {
     const blogData = await Blog.findAll({
-      attributes: [
-        'id',
-        'date',
-        'title',
-        'content'
-      ],
+      attributes: ["id", "date", "title", "content"],
 
       include: [
-        {model: User, attributes: ['username']},
-        {model: Comment, attributes: ['date', 'comment_text', 'user_id']},
-      ]
-      });
-      
+        { model: User, attributes: ["username"] },
+        { model: Comment, attributes: ["date", "comment_text", "user_id"] },
+      ],
+    });
     const blogs = blogData.map((blog) => blog.get({ plain: true }));
+    for (let i=0; i<blogs.length; i++){
+      const commentsArray = (blogs[i].comments);
+      for (let j=0; j<commentsArray.length; j++){
+        const comment = commentsArray[j]
+        const userData = await User.findOne({
+          where: {id:comment.user_id}
+        })
+        const username = userData.get({ plain: true }).username
+        blogs[i].comments[j].username=username
+      }
+    }
 
-    res.render('homepage', {
+    res.render("homepage", {
       blogs,
       logged_in: req.session.logged_in,
-
     });
-
   } catch (err) {
     res.status(503).json(err);
   }
 }); // end HOMEPAGE
 
-
 // SINGLE POST
-router.get('/postpage/:id', withAuth, async (req, res) => {
-
+router.get("/postpage/:id", withAuth, async (req, res) => {
   try {
     const postData = await Blog.findOne({
       where: { id: req.params.id },
       include: [
-        { model: User, attributes: ['username'] },
-        { model: Comment, attributes: ['date', 'comment_text', 'user_id']}
-       ],
+        { model: User, attributes: ["username"] },
+        { model: Comment, attributes: ["date", "comment_text", "user_id"] },
+      ],
     });
 
-    const post = postData.get({ plain: true });
+    const post = postData.get({ plain: true });{
+      const commentsArray = (post.comments);
+      for (let j=0; j<commentsArray.length; j++){
+        const comment = commentsArray[j]
+        const userData = await User.findOne({
+          where: {id:comment.user_id}
+        })
+        const username = userData.get({ plain: true }).username
+        post.comments[j].username=username
+      }
+    }
 
-    res.render('postpage', {
+    res.render("postpage", {
       post,
-      logged_in: req.session.logged_in
-
+      logged_in: req.session.logged_in,
     });
-
   } catch (err) {
-    res.status(404).json({ message: 'No post found with that ID.' });
+    res.status(404).json({ message: "No post found with that ID." });
   }
 }); // end of SINGLE POST
 
-
 // NEW COMMENT VIEW (from home-routes.js)
-router.get('/newcomment/:id', withAuth, async (req, res) => {
-
+router.get("/newcomment/:id", withAuth, async (req, res) => {
   try {
     const postData = await Blog.findOne({
       where: { id: req.params.id },
       include: [
-        { model: User, attributes: ['username'] },
-        { model: Comment, attributes: ['date', 'comment_text']}
-       ],
+        { model: User, attributes: ["username"] },
+        { model: Comment, attributes: ["date", "comment_text"] },
+      ],
     });
 
     const post = postData.get({ plain: true });
 
-    res.render('newcomment', {
+    res.render("newcomment", {
       post,
-      logged_in: req.session.logged_in
-
+      logged_in: req.session.logged_in,
     });
-
   } catch (err) {
-    res.status(404).json({ message: 'No post found with that ID.' });
+    res.status(404).json({ message: "No post found with that ID." });
   }
 }); // end NEW COMMENT VIEW
 
-
 // POST NEW COMMENT (sent here from addcomments.js)
-router.post('/comment', withAuth, async (req, res) => {
-
-  if(req.session) {
-
-    Comment.create ({
+router.post("/comment", withAuth, async (req, res) => {
+  if (req.session) {
+    Comment.create({
       date: req.body.comment_date,
       blog_id: req.body.blog_id,
       comment_text: req.body.commentText,
       user_id: req.session.user_id,
-    })
-    
-  } else (err => {
+    });
+  } else
+    (err) => {
       res.status(400).json.user_id(err);
-    })
-  
+    };
 }); // end of POST NEW COMMENT
 
-
 // DASHBOARD VIEW
-router.get('/dashboard', withAuth, async (req, res) => {
-
+router.get("/dashboard", withAuth, async (req, res) => {
   try {
-    
-   const blogData = await Blog.findAll({
-     where: { username_id: req.session.user_id },
-    
-      attributes: [
-       'id',
-       'date',
-       'title',
-       'content'
-     ],
+    const blogData = await Blog.findAll({
+      where: { username_id: req.session.user_id },
 
-     include: [
-       {model: User, attributes: [ 'id', 'username']},
-       {model: Comment, attributes: ['date', 'comment_text', 'user_id']},
-     ]
-  });
+      attributes: ["id", "date", "title", "content"],
 
-   const blogs = blogData.map((blog) => blog.get({ plain: true }));
+      include: [
+        { model: User, attributes: ["id", "username"] },
+        { model: Comment, attributes: ["date", "comment_text", "user_id"] },
+      ],
+    });
 
-   res.render('dashboard', {
-     blogs,
-     logged_in: req.session.logged_in,
+    const blogs = blogData.map((blog) => blog.get({ plain: true }));
+        for (let i=0; i<blogs.length; i++){
+      const commentsArray = (blogs[i].comments);
+      for (let j=0; j<commentsArray.length; j++){
+        const comment = commentsArray[j]
+        const userData = await User.findOne({
+          where: {id:comment.user_id}
+        })
+        const username = userData.get({ plain: true }).username
+        blogs[i].comments[j].username=username
+      }
+    }
 
-   });
-
- } catch (err) {
-   res.status(503).json(err);
- }
+    res.render("dashboard", {
+      blogs,
+      logged_in: req.session.logged_in,
+    });
+  } catch (err) {
+    res.status(503).json(err);
+  }
 }); // end DASHBOARD VIEW
 
-
 // NEW POST VIEW
-router.get('/newpostview', withAuth, async (req, res) => {
-
+router.get("/newpostview", withAuth, async (req, res) => {
   try {
     const postData = await Blog.findOne({
       include: [
-        { model: User, attributes: ['username'] },
-        { model: Comment, attributes: ['date', 'comment_text']}
-       ],
+        { model: User, attributes: ["username"] },
+        { model: Comment, attributes: ["date", "comment_text"] },
+      ],
     });
 
     const post = postData.get({ plain: true });
 
-    res.render('newpostview', {
+    res.render("newpostview", {
       post,
-      logged_in: req.session.logged_in
-
+      logged_in: req.session.logged_in,
     });
-
-
   } catch (err) {
     res.status(404).json(err);
   }
 }); // end NEW POST VIEW
 
-
 // NEW POST
-router.post('/newpost', withAuth, (req, res) => {
-
-  if(req.session) {
-
-     Blog.create ({
+router.post("/newpost", withAuth, (req, res) => {
+  if (req.session) {
+    Blog.create({
       date: req.body.date,
       title: req.body.post_title,
       content: req.body.post_content,
       username_id: req.session.user_id,
-    })
-
-  } else (err => {
-        res.status(400).json.user_id(err);
     });
-  
+  } else
+    (err) => {
+      res.status(400).json.user_id(err);
+    };
 }); // end of POST NEW COMMENT
 
-
 // EDIT POST VIEW
-router.get('/editpost/:id', withAuth, async (req, res) => {
-
+router.get("/editpost/:id", withAuth, async (req, res) => {
   try {
     const postData = await Blog.findOne({
       where: { id: req.params.id },
       include: [
-        { model: User, attributes: ['username'] },
-        { model: Comment, attributes: ['date', 'comment_text', 'user_id']}
-       ],
+        { model: User, attributes: ["username"] },
+        { model: Comment, attributes: ["date", "comment_text", "user_id"] },
+      ],
     });
 
     const post = postData.get({ plain: true });
 
-    res.render('editpost', {
+    res.render("editpost", {
       post,
-      logged_in: req.session.logged_in
-
+      logged_in: req.session.logged_in,
     });
-
   } catch (err) {
-    res.status(404).json({ message: 'No post found with that ID.' });
+    res.status(404).json({ message: "No post found with that ID." });
   }
 }); // end of EDIT POST VIEW
 
-
 // EDITED POST
-router.put('/editedpost', withAuth, (req, res) => {
-
-  if(req.session) {
+router.put("/editedpost", withAuth, (req, res) => {
+  if (req.session) {
     console.log("req.body.post_title");
     console.log(req.body.post_title);
     console.log(req.body.id);
 
-     Blog.update(
+    Blog.update(
       {
-      title: req.body.post_title,
-      content: req.body.post_content,
+        title: req.body.post_title,
+        content: req.body.post_content,
       },
-      {where: { id: req.body.post_id }},
+      { where: { id: req.body.post_id } }
     );
-
-  } else (err => {
-        res.status(400).json.user_id(err);
-    });
-  
+  } else
+    (err) => {
+      res.status(400).json.user_id(err);
+    };
 }); // end of EDIT POST
 
-
 // DELETE SINGLE POST
-router.get('/deletepost/:id', withAuth,  async (req, res) => {
+router.get("/deletepost/:id", withAuth, async (req, res) => {
+  await Blog.destroy({
+    where: { id: req.params.id },
+  });
 
- await Blog.destroy({
-      where: { id: req.params.id },
-    });
+  const blogData = await Blog.findAll({
+    attributes: ["id", "date", "title", "content"],
 
-    const blogData = await Blog.findAll({
-      attributes: [
-        'id',
-        'date',
-        'title',
-        'content'
-      ],
+    include: [
+      { model: User, attributes: ["username"] },
+      { model: Comment, attributes: ["comment_text"] },
+    ],
+  });
 
-      include: [
-        {model: User, attributes: ['username']},
-        {model: Comment, attributes: ['comment_text']},
-      ]
-      });
+  const blogs = blogData.map((blog) => blog.get({ plain: true }));
 
-    const blogs = blogData.map((blog) => blog.get({ plain: true }));
-
-    res.render('homepage', {
-      blogs,
-      logged_in: req.session.logged_in,
-    });
-
+  res.render("homepage", {
+    blogs,
+    logged_in: req.session.logged_in,
+  });
 }); // end DELETE SINGLE POST
 
-
 // LOGIN
-router.get('/login', (req, res) => {
+router.get("/login", (req, res) => {
   // If a session exists, redirect the request to the homepage
   if (req.session.logged_in) {
-    res.redirect('/');
+    res.redirect("/");
     return;
   }
 
   // If directed to login, then listeners in login.js are called
-  res.render('login');
+  res.render("login");
 }); // end of LOGIN
-
 
 module.exports = router;

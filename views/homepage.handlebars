@@ -9,7 +9,7 @@
     <p class="card-text text-dark">{{blog.content}}</p>
     <hr>
     {{#each blog.comments}}
-    <h6 class="fst-italic">Comment by user #{{this.user_id}} on {{this.date}}:</h6>
+    <h6 class="fst-italic">Comment by {{this.username}} on {{this.date}}:</h6>
     {{this.comment_text}}
     <hr>
     {{/each}}
